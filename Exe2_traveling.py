@@ -1,12 +1,13 @@
 import csv
 import os
-import sys
 
 with open("data/opc_activities.csv") as File:
     reader = csv.DictReader(File, delimiter=';')
+    reader = list(reader)
 
     while True:
 
+        os.system("cls")
         print("Soy su sistema de ayuda para viajes.")
         money = input("Seleciona tu presupuesto maximo: ")
 
@@ -15,22 +16,21 @@ with open("data/opc_activities.csv") as File:
         if money < 100:
             os.system("cls")
             print("Con ese presupuesto no podemos ofrecerte ningún viaje.")
+            input("Pulsa enter para continuar")
 
-        elif  money >= 100:
-            os.system("cls")
-            print("Con este presupuesto te puedes permitir viajar en:")
-            ava_season = []
+        elif money >= 100:
 
             # Options avaliable for bugedt
             while True:
-                File.seek(0)
+                os.system("cls")
+                print("Con este presupuesto te puedes permitir viajar en:")
+                ava_season = []
                 for row in reader:
                     if int(row['money']) <= money:
                         if row['season'] not in ava_season:
                             ava_season.append(row['season'])
                             print(row['season'])
 
-                File.seek(0)
 
                 #options avaliable for activities
 
@@ -38,14 +38,14 @@ with open("data/opc_activities.csv") as File:
                 select_season = input("En que estación de las disponibles te gustaria viajar: ")
                 select_season = select_season.lower()
 
-                os.system("cls")
-
                 if select_season in ava_season:
                     while True:
+                        os.system("cls")
                         ava_activities = []
                         ava_places = []
                         num_act = 0
                         print("-------------------------------------------------------------")
+                        #File.seek(0)
                         for row in reader:
                             if row['season'] == select_season:
                                 num_act += 1
@@ -63,7 +63,7 @@ with open("data/opc_activities.csv") as File:
                         print("Cual de las anteriores actividades es la que mas te interesa?")
                         select_act = input("Seleciona el número correspondiente: ")
 
-                        if int(select_act) in range(1, num_act):
+                        if int(select_act) in range(1, num_act+1):
                             select_act = int(select_act) - 1
                             os.system("cls")
                             print(f"Nuestro super-ordenador recomienda para ti:\n"
@@ -71,11 +71,12 @@ with open("data/opc_activities.csv") as File:
                             exit()
                         else:
                             os.system("cls")
-                            print("No entendi tu respuesta.")
+                            print("No entendi tu respuesta.1")
                             input("Pulsa enter para continuar")
 
 
                 elif select_season in ["primavera", 'otoño', 'invierno', 'verano'] and select_season not in ava_season:
+                    os.system("cls")
                     print("No puedes viajar en esa estación con un presupuesto tan bajo.")
                     input("Pulsa enter para continuar")
 
@@ -83,17 +84,3 @@ with open("data/opc_activities.csv") as File:
                     print("No entendi tu respuesta.")
                     input("Pulsa enter para continuar")
 
-        print("No entendi tu respuesta.")
-        input("Pulsa enter para continuar")
-
-
-
-
-def options_season(money_destination):
-
-    with open('data/opc_activities.csv') as File:
-        reader = csv.DictReader(File, delimiter=';')
-
-
-
-money_destination = options_money(300)
